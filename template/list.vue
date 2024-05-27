@@ -28,18 +28,8 @@
         </div>
         <div class="toolbar-item">
           <span class="item-label">状态</span>
-          <el-select
-            v-model="tableRes.tableOptions.orderStatus"
-            placeholder="请选择"
-            clearable
-            filterable
-          >
-            <el-option
-              v-for="item in orderStatusArr"
-              :key="item.value"
-              :value="item.value"
-              :label="item.label"
-            ></el-option>
+          <el-select v-model="tableRes.tableOptions.orderStatus" placeholder="请选择" clearable filterable>
+            <el-option v-for="item in orderStatusArr" :key="item.value" :value="item.value" :label="item.label"></el-option>
           </el-select>
         </div>
         <div class="toolbar-item">
@@ -76,14 +66,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onActivated } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { dictEscape, thousands, dateFormat } from "@fe/filter";
-import { useGlobalStore } from "@/store/globalStore";
-import api from "@/api/api";
-import useAxios from "@/utils/useAxios";
-import { TableColumn, useTable, useDate } from "@fe/element-component-library";
+import { reactive, ref, onActivated } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { dictEscape, thousands, dateFormat } from '@fe/filter';
+import { useGlobalStore } from '@/store/globalStore';
+import api from '@/api/api';
+import useAxios from '@/utils/useAxios';
+import { TableColumn, useTable, useDate } from '@fe/element-component-library';
 
 interface ITableSearch {
   orderNo: string;
@@ -109,36 +99,36 @@ const store = useGlobalStore();
 const orderStatusArr = ref<Dict[]>([]);
 
 const tableColumns = reactive<TableColumn<ITableRow>[]>([
-  { label: "订单编号", prop: "orderNo", minWidth: "140" },
-  { label: "订单标题", prop: "orderTitle", minWidth: "140" },
+  { label: '订单编号', prop: 'orderNo', minWidth: '140' },
+  { label: '订单标题', prop: 'orderTitle', minWidth: '140' },
   {
-    label: "订单状态",
-    prop: "orderStatus",
-    minWidth: "150",
+    label: '订单状态',
+    prop: 'orderStatus',
+    minWidth: '150',
     filter: dictEscape,
-    filterParams: [orderStatusArr.value],
+    filterParams: [orderStatusArr.value]
   },
-  { label: "订单时间", prop: "orderTime", minWidth: "150", filter: dateFormat },
+  { label: '订单时间', prop: 'orderTime', minWidth: '150', filter: dateFormat },
   {
-    label: "订单金额",
-    prop: "orderAmount",
-    minWidth: "140",
-    filter: thousands,
+    label: '订单金额',
+    prop: 'orderAmount',
+    minWidth: '140',
+    filter: thousands
   },
-  { label: "操作", prop: "handle", width: "160", fixed: "right" },
+  { label: '操作', prop: 'handle', width: '160', fixed: 'right' }
 ]);
 
 const tableRes = useTable<ITableRow, ITableSearch>({
   tableOptions: {
-    orderNo: "",
-    startTime: "",
-    endTime: "",
-    orderStatus: "",
+    orderNo: '',
+    startTime: '',
+    endTime: '',
+    orderStatus: ''
   },
-  axiosConfig: { method: "post", url: api.getPageList },
+  axiosConfig: { method: 'post', url: api.getPageList }
 });
 
-const dateRes = useDate(tableRes.tableOptions, "startTime", "endTime");
+const dateRes = useDate(tableRes.tableOptions, 'startTime', 'endTime');
 
 const handleSearch = () => {
   tableRes.search();
@@ -148,7 +138,7 @@ const handleReset = () => {
   tableRes.reset();
 };
 const handleAdd = () => {
-  router.push("/list/add");
+  router.push('/list/add');
 };
 const handleDetail = (row: ITableRow) => {
   router.push(`/list/detail/${row.id}`);
@@ -158,23 +148,20 @@ const handleEdit = (row: ITableRow) => {
 };
 
 const handleDelete = async (row: ITableRow) => {
-  ElMessageBox.confirm("是否确认删除该数据", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
+  ElMessageBox.confirm('是否确认删除该数据', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
   }).then(async () => {
     await useAxios.post(api.deleteSome, { id: row.id });
-    ElMessage.success("删除成功");
+    ElMessage.success('删除成功');
     handleSearch();
   });
 };
 
 const onInit = async () => {
-  store.setBreadcrumb([
-    { title: "首页" },
-    { title: route.meta.title as string },
-  ]);
-  orderStatusArr.value = store.getDict("order_status");
+  store.setBreadcrumb([{ title: '首页' }, { title: route.meta.title as string }]);
+  orderStatusArr.value = store.getDict('order_status');
   tableRes.search();
 };
 

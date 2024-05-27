@@ -1,0 +1,42 @@
+.DS_Store
+node_modules
+/dev
+/test
+/test2
+/k8s
+/k8s2
+/gray
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+vite.local.proxy.ts
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# sonar
+.scannerwork
+
+# fe-tools
+.fe-tools
+
+# auto import
+auto-imports.d.ts
+unplugin-components.d.ts
+
+# visualizer
+stats.html
